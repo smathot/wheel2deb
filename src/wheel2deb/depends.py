@@ -123,12 +123,13 @@ def search_python_deps(ctx, wheel, extras=None):
     for pdep, req in zip(debnames, requirements):
 
         def check(x):
-            if req.specifier.contains(x.version, prereleases=True):
+            version = x.version.replace('~', '')
+            if req.specifier.contains(version, prereleases=True):
                 logger.info(f"{x} satisfies requirement {req}")
             else:
                 logger.warning(f"{x} does not satisfy requirement {req}")
             return ctx.ignore_upstream_versions or req.specifier.contains(
-                x.version, prereleases=True
+                version, prereleases=True
             )
 
         version = None

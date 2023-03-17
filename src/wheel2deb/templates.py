@@ -1,9 +1,8 @@
 from typing import Optional
-
 from jinja2 import Environment, FunctionLoader
 
 DEBIAN_CHANGELOG = """\
-{{ package.name }} ({{ package.version }}) stable; urgency=medium
+{{ package.name }} ({{ package.version }}) {{ package.distro }}; urgency=medium
 
   * Release {{ package.version }}
 

@@ -1,4 +1,5 @@
 import re
+import os
 from pathlib import Path
 from threading import Event, Thread
 from time import sleep
@@ -37,6 +38,8 @@ def parse_debian_control(cwd: Path):
 def build_package(cwd: Path) -> int:
     """Run dpkg-buildpackage in specified path."""
     args = ["dpkg-buildpackage", "-us", "-uc"]
+    if os.environ.get('build_deb', 0) not in ('1', 1):
+        args += ['-S']
     arch = parse_debian_control(cwd)["Architecture"]
     if arch != "all":
         args += ["--host-arch", arch]

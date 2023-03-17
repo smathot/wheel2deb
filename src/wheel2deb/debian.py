@@ -1,4 +1,5 @@
 import re
+import os
 from pathlib import Path
 from typing import List
 
@@ -72,7 +73,7 @@ class SourcePackage:
         self.extended_desc = ctx.extended_desc
         # upstream license
         self.license = wheel.metadata.license or "custom"
-
+        self.distro = os.environ.get('distro', 'stable')
         # debian package architecture
         arch = platform_to_arch(wheel.platform_tag)
         self.arch = arch or "all"
@@ -135,10 +136,17 @@ class SourcePackage:
             destination_path = "/usr/lib/python2.7/dist-packages/"
         else:
             destination_path = "/usr/lib/python3/dist-packages/"
-
+        system_icon_path = '/usr/share/icons/hicolor/scalable/apps/'
+        system_desktop_path = '/usr/share/applications/'
         for absolute_source_path in (self.root / self.src).iterdir():
             source_path = absolute_source_path.relative_to(self.root)
-            if not source_path.name.endswith(".data"):
+            # breakpoint()
+            if source_path.name == 'mime':
+                icon_path = source_path / f'{self.wheel.name}.svg'
+                install.add(f"{icon_path} {system_icon_path}")
+                desktop_path = source_path / f'{self.wheel.name}.desktop'
+                install.add(f"{desktop_path} {system_desktop_path}")
+            elif not source_path.name.endswith(".data"):
                 install.add(f"{source_path} {destination_path}")
             else:
                 if (absolute_source_path / "purelib").exists():

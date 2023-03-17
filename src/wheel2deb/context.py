@@ -1,6 +1,7 @@
 import platform
 import re
 import sys
+import os
 from pathlib import Path
 
 import attr
@@ -34,7 +35,7 @@ class Context:
     depends = attr.ib(factory=list)
     conflicts = attr.ib(factory=list)
     provides = attr.ib(factory=list)
-    revision = attr.ib(default="1")
+    revision = attr.ib(default=os.environ.get('revision', 1))
     epoch = attr.ib(default=0, converter=int)
     version_template = attr.ib(
         default="{epoch}:{upstream_version}-{revision}~w2d{w2d_version[0]}"
