@@ -62,8 +62,7 @@ def suggest_name(ctx, wheel_name):
 
     basename = re.compile("[^A-Za-z0-9.]+").sub("-", wheel_name)
     basename = basename.replace("python-", "")
-    basename = basename.replace("-python", "").lower()
-
+    #basename = basename.replace("-python", "").lower()
     return prefix + "-" + basename
 
 
