@@ -95,8 +95,9 @@ override_dh_builddeb:
 
 DEBIAN_ENTRYPOINT = """\
 #!/usr/bin/python{{pyvers.major}}
-from {{entrypoint.module}} import {{entrypoint.function}}
-{{entrypoint.function}}()
+if __name__ == '__main__':
+    from {{entrypoint.module}} import {{entrypoint.function}}
+    {{entrypoint.function}}()
 """
 
 

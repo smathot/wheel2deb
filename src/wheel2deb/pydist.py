@@ -121,8 +121,8 @@ class Wheel:
             config = configparser.ConfigParser()
             config.read_string((self.info_dir / "entry_points.txt").read_text())
             if "console_scripts" in config.sections():
-                name, path = config.items("console_scripts")[0]
-                entrypoints.append(Entrypoint(name, *(path.split(":"))))
+                for name, path in config.items("console_scripts"):
+                    entrypoints.append(Entrypoint(name, *(path.split(":"))))
         except FileNotFoundError:
             pass
         return entrypoints
